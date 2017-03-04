@@ -1,4 +1,4 @@
-#include <unistd.h>
+#include <crypt.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -9,21 +9,27 @@ int main(int argc, char *argv[])
 {
 	FILE *arq;
 	arq = fopen(argv[1],"r");
-	
+
 	// declarando as variáveis - vetores
 	char senha[BUFF + 50];
 	char salt[BUFF];
 	char comp[BUFF + 75];
+	char tmp[BUFF + 75];
+	char *p, *p1, *p2;
 	char *result;
-	
+
 	// o hash vai ser armazenado em comp
 	printf("Digite o Hash completo\n");
 	scanf("%s", comp);
 
-	// o salt vai ser armazenado em salt
-	printf("Digite o Salt\n");
-	scanf("%s",salt);
-	
+    strncpy(tmp, comp, BUFF+75);
+
+    p = strtok(tmp, "$");
+    p1 = p;
+    p = strtok(NULL, "$");
+    p2 = p;
+    sprintf(salt, "$%s$%s$", p1, p2);
+
 	int f = 0;
 
 	while(fscanf(arq, "%s", &senha) != EOF) {
@@ -39,7 +45,7 @@ int main(int argc, char *argv[])
 				printf("Testando.. %s \n", senha);
 			}
 	}
-	
+
 	if(f==0)
 	{
 		printf("Senha não encontrada..\n");
