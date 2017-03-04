@@ -1,4 +1,4 @@
-# Compilando
+# Compiling
 gcc loncrack.c -l crypt -o loncrack
 
 # Usage
